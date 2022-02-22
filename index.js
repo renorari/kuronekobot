@@ -1,3 +1,5 @@
+console.log(require('discord.js').version)
+
 const { Client, Intents, MessageEmbed, Permissions } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
 // const fs = require('fs');
@@ -6,7 +8,7 @@ const prefix = '!'
 // let connections = {};
 // let speak_chs = {};
 
-DISCORD_BOT_TOKEN = ""
+DISCORD_BOT_TOKEN = "TOKEN"
 
 client.on('ready', () => {
     //This will get the amount of servers and then return it.
@@ -158,7 +160,14 @@ client.on('messageCreate', async message => {
                     {
                         name: "!gsh 検索する文字",
                         value: "Google検索"
-
+                    },
+                    {
+                        name: "!timeout [ユーザーID、またはメンション] [タイムアウトする時間(分)]",
+                        value: "ユーザーをタイムアウトします。"
+                    },
+                    {
+                        name: "!untimeout",
+                        value: "タイムアウトしたユーザーを解除する。"
                     }
                 ]
             })
@@ -317,8 +326,8 @@ client.on('messageCreate', async message => {
                         value: "https://forms.gle/vNz5jQQt1gM4gtcu6"
                     },
                     {
-                        name: "クレカでの寄付",
-                        value: "https://store.kuroneko6423.com"
+                        name: "クレカやpaypayでの寄付",
+                        value: "https://fantia.jp/kuroneko6423"
                     }
                 ]
             })
@@ -429,7 +438,7 @@ client.on('messageCreate', async message => {
                             text: `サーバー名：${message.guild.name}`
                         },
                         thumbnail: {
-                            url: member.avatarURL()
+                            url: member.user.avatarURL()
                         },
                         fields: [
                             {
@@ -578,4 +587,25 @@ client.on("messageCreate", message => {
         message.delete({ timeout: 1000 }).catch((e) => message.channel.send(`メッセージを削除する際にエラーが起きました\nエラー:${e.message}`))  
     })
 
+.on('messageCreate', message => {
+  if(message.content.startsWith("!timeout")){
+if(!message.member.permissions.has("MODERATE_MEMBERS")||!message.channel.permissionsFor(message.guild.me).has("MODERATE_MEMBERS")) return message.reply("権限不足");
+    const args = message.content.split(" "),member = message.mentions.members.first()??message.guild.members.cache.get(args[1]);
+    if(!member) return message.reply(`ユーザーが見つかりませんでした`);
+    if(isNaN(args[2])) return message.reply(`数字を入れてください`);
+    member.timeout(Number(args[2]) * 60 * 1000, args.slice(3)?.join(" ")||`なし`)    .then(message.reply(`正常にタイムアウトしました\n詳細\n対象ユーザー:${member} 時間:${args[2]}分 理由:${args.slice(3)?.join(" ")||"なし"}`))
+    .catch(e=>message.reply(`エラー:${e}`));
+  }
+  if(message.content.startsWith("!untimeout")){
+    if(!message.member.permissions.has("MODERATE_MEMBERS")||!message.channel.permissionsFor(message.guild.me).has("MODERATE_MEMBERS")) return message.reply("権限不足");
+    const args = message.content.split(" ")[1],member = message.mentions.members.first()??message.guild.members.cache.get(args);
+    if(!member) return message.reply(`ユーザーが見つかりませんでした`);
+    member.timeout(0)
+    .then(message.reply(`正常にタイムアウトを解除しました\n対象ユーザー${member}`))
+    .catch(e=>message.reply(`エラー:${e}`));
+  }
+})
+
 client.login(DISCORD_BOT_TOKEN).catch(err => console.warn(err));
+
+
