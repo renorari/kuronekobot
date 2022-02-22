@@ -1,6 +1,6 @@
 console.log(require('discord.js').version)
 
-const { Client, Intents, MessageEmbed, Permissions } = require('discord.js');
+const { Client, Intents, MessageEmbed, Permissions, MessageActionRow,  MessageButton, } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
 // const fs = require('fs');
 
@@ -10,6 +10,7 @@ const prefix = '!'
 
 DISCORD_BOT_TOKEN = "TOKEN"
 
+//ステータス
 client.on('ready', () => {
     //This will get the amount of servers and then return it.
     const servers = client.guilds.cache.size
@@ -30,7 +31,8 @@ client.on('messageCreate', async message => {
     if (message.content.indexOf(prefix) !== 0) return;
     const [command, ...args] = message.content.slice(prefix.length).split(' ')
 
-    switch (command) {
+    switch (command) 
+//Google検索
         case 'gsh':
             flag = 1;
             let msg = '検索したいキーワード';
@@ -57,6 +59,7 @@ client.on('messageCreate', async message => {
             }
         break;
 
+//サポートサーバー
         case 'support':
             var embed = new MessageEmbed({
                 title: "サポートサーバーです",
@@ -71,6 +74,7 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
+//helpコマンド
         case 'help':
             var embed = new MessageEmbed({
                 title: "helpです",
@@ -92,10 +96,10 @@ client.on('messageCreate', async message => {
                     {
                         name: "!support",
                         value: "サポサバのURLを表示します"
-                    },
-                    {
-                        name: "!sp",
-                        value: "制作協力者の紹介です"
+//                    },
+//                    {
+//                        name: "!sp",
+//                        value: "制作協力者の紹介です"
                     },
                     {
                         name: "!gban",
@@ -168,12 +172,18 @@ client.on('messageCreate', async message => {
                     {
                         name: "!untimeout",
                         value: "タイムアウトしたユーザーを解除する。"
+                    },
+                    {
+                        name: "!ti [ticketのタイトル]",
+                        value: "ticketを作ります。"
+
                     }
                 ]
             })
-            message.channel.send({embeds: [embed]});
-
+            message.channel.send({embeds: [embed]})
         break;
+
+//おみくじ機能
         case 'omikuji':
             let arr = ["大吉", "中吉", "小吉", "吉", "凶", "大凶"];
             var random = Math.floor(Math.random() * arr.length);
@@ -181,6 +191,7 @@ client.on('messageCreate', async message => {
             message.reply({content: result});
         break;
 
+//ping確認コマンド
         case 'ping':
             message.channel.send({content: ` Ping を確認しています...`})
             .then((pingcheck) => {
@@ -190,6 +201,7 @@ client.on('messageCreate', async message => {
             });
         break;
 
+//メッセージ消去
         case 'c':
             if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
             if (!args[0]) return message.channel.send(
@@ -200,6 +212,7 @@ client.on('messageCreate', async message => {
             message.channel.bulkDelete(messages);
         break;
 
+//グローバルチャットのルール
         case 'g-rule':
             var embed = new MessageEmbed({
                 title: "グローバルチャット利用規約",
@@ -239,6 +252,7 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
+//KuronekoServerのweb
         case 'web':
             var embed = new MessageEmbed({
                 title: "webサイトです",
@@ -252,6 +266,7 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
+//グローバルBANフォーム
         case 'gban':
             var embed = new MessageEmbed({
                 title: "グローバルBANをするためのフォームです",
@@ -265,41 +280,43 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
-        case 'sp':
-            var embed = new MessageEmbed({
-                title: "制作にて協力してくれた方と主の紹介",
-                description: "",
-                color: 0xffff00,
-                fields: [
-                    {
-                        name: "黒猫ちゃん(管理者)",
-                        value: "Discord | https://discord.gg/Ya6YqBr | web | https://kuroneko6423.com/"
-                    },
-                    {
-                        name: "Yuukiさん",
-                        value: "Discord | https://discord.gg/uc5KfSPwSX"
-                    },
-                    {
-                        name: "cronさん",
-                        value: "web | https://cron.jp"
-		                    },
-                    {
-                        name: "Nabrさん",
-                        value: "よろしく"
-		                    },
-                    {
-                        name: "forestblackさん",
-                        value: "web | https://komoro.work/"
-                    },
-                    {
-                        name: "YHさん",
-                        value: "寄付 | https://ko-fi.com/yh82667"
-                    }
-                ]
-            })
-            message.channel.send({embeds: [embed]});
-        break;
+//運営リスト2
+//        case 'sp':
+//            var embed = new MessageEmbed({
+//                title: "制作にて協力してくれた方と主の紹介",
+//                description: "",
+//                color: 0xffff00,
+//                fields: [
+//                    {
+//                        name: "黒猫ちゃん(管理者)",
+//                        value: "Discord | https://discord.gg/Ya6YqBr | web | https://kuroneko6423.com/"
+//                    },
+//                    {
+//                        name: "Yuukiさん",
+//                        value: "Discord | https://discord.gg/uc5KfSPwSX"
+//                    },
+//                    {
+//                        name: "cronさん",
+//                        value: "web | https://cron.jp"
+//		                    },
+//                    {
+//                        name: "Nabrさん",
+//                        value: "よろしく"
+//		                    },
+//                    {
+//                        name: "forestblackさん",
+//                        value: "web | https://komoro.work/"
+//                    },
+//                    {
+//                        name: "YHさん",
+//                        value: "寄付 | https://ko-fi.com/yh82667"
+//                    }
+//                ]
+//            })
+//            message.channel.send({embeds: [embed]});
+//        break;
 
+//bot導入宣伝
         case 'in':
             var embed = new MessageEmbed({
                 title: "BOT導入",
@@ -315,6 +332,7 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
+//寄付サイト
         case 'donation':
             var embed = new MessageEmbed({
                 title: "BOT支援",
@@ -334,6 +352,7 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
+//MinecraftServerルール
         case 'MinecraftRule':
             var embed = new MessageEmbed({
                 title: "～～minecraftServer Rule",
@@ -397,6 +416,7 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
+//運営リスト
         case 'pi':
             var embed = new MessageEmbed()
                 .setTitle("KuronekoServer運営List")　//Embedのタイトル
@@ -418,6 +438,8 @@ client.on('messageCreate', async message => {
 
             message.channel.send({embeds: [embed]}); 
         break;
+
+//ユーザー情報
         case 'user':
             const user_id = args[0]
             if (!user_id) return message.channel.send({ content: "エラー: IDが入力されていません" });
@@ -474,6 +496,7 @@ client.on('messageCreate', async message => {
             });
         break;
 
+//アンケート機能
         case 'poll':
             const [title, ...choices] = args
             if (!title) return message.channel.send({content: 'タイトルを指定してください'})
@@ -498,7 +521,7 @@ client.on('messageCreate', async message => {
     }
 })
 
-
+//自動返信
 client.on('messageCreate', async message => {
 
     var msg = null
@@ -587,13 +610,15 @@ client.on("messageCreate", message => {
         message.delete({ timeout: 1000 }).catch((e) => message.channel.send(`メッセージを削除する際にエラーが起きました\nエラー:${e.message}`))  
     })
 
+//timeout機能
 .on('messageCreate', message => {
   if(message.content.startsWith("!timeout")){
 if(!message.member.permissions.has("MODERATE_MEMBERS")||!message.channel.permissionsFor(message.guild.me).has("MODERATE_MEMBERS")) return message.reply("権限不足");
     const args = message.content.split(" "),member = message.mentions.members.first()??message.guild.members.cache.get(args[1]);
     if(!member) return message.reply(`ユーザーが見つかりませんでした`);
     if(isNaN(args[2])) return message.reply(`数字を入れてください`);
-    member.timeout(Number(args[2]) * 60 * 1000, args.slice(3)?.join(" ")||`なし`)    .then(message.reply(`正常にタイムアウトしました\n詳細\n対象ユーザー:${member} 時間:${args[2]}分 理由:${args.slice(3)?.join(" ")||"なし"}`))
+    member.timeout(Number(args[2]) * 60 * 1000, args.slice(3)?.join(" ")||`なし`)    
+    .then(message.reply(`正常にタイムアウトしました\n詳細\n対象ユーザー:${member} 時間:${args[2]}分 理由:${args.slice(3)?.join(" ")||"なし"}`))
     .catch(e=>message.reply(`エラー:${e}`));
   }
   if(message.content.startsWith("!untimeout")){
@@ -606,6 +631,63 @@ if(!message.member.permissions.has("MODERATE_MEMBERS")||!message.channel.permiss
   }
 })
 
+//ticket機能
+client.on('messageCreate', async message => {
+  if (message.content.startsWith("!ti")) {
+    if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send('NOADOMIN');
+      const args = message.content.split(" ").slice(1);
+      if (!args[0]) return message.reply("コンテンツがないよ");
+      const tic1 = new MessageButton().setCustomId("ticket").setStyle("PRIMARY").setLabel("チケット");
+      await message.channel.send({
+          embeds: [{
+              description: String(args.join(" "))
+          }],
+          components: [new MessageActionRow().addComponents(tic1)]
+      });
+      if(message.guild.channels.cache.find(name => name.name === "ticket")) return;
+      message.guild.channels.create('ticket',{
+         type: 'GUILD_CATEGORY'
+        });
+        //ticketというカテゴリーを作る
+  }
+});
+client.on('interactionCreate', async(interaction) => {
+  if (interaction.customId === "ticket") {
+      const ticketid = interaction.user.id
+      if (interaction.guild.channels.cache.find(name => name.name === ticketid)) return interaction.reply({
+          content: "これ以上作れないよ",
+          ephemeral: true
+      });
+      const ct = interaction.guild.channels.cache.find(name => name.name === "ticket")
+      if(!ct) return interaction.channel.send("ticketカテゴリーがありません");
+      interaction.guild.channels.create(ticketid, {
+          permissionOverwrites: [{
+              id: interaction.guild.roles.everyone,
+              deny: ['VIEW_CHANNEL']
+          }],
+          parent: ct.id
+      }).then(channels => {
+          channels.permissionOverwrites.edit(interaction.user.id, {
+              VIEW_CHANNEL: true
+          });
+          const tic2 = new MessageButton().setCustomId("close").setStyle("PRIMARY").setLabel("閉じる");
+          //buttonを作成
+          channels.send({
+              embeds: [{
+                  description: "チケットを閉じますか?"
+              }],
+              components: [new MessageActionRow().addComponents(tic2)]
+          })
+          interaction.reply({
+              content: `${channels}を作りました`,
+              ephemeral: true
+          });
+      }).catch(e => interaction.reply(`エラー:${e.message}`))
+  }
+  if (interaction.customId === "close") {
+    //buttonIDがcloseのボタンが押されたら実行
+      interaction.channel.delete().catch(e => interaction.reply(`エラー:${e.message}`))
+  }
+});
+
 client.login(DISCORD_BOT_TOKEN).catch(err => console.warn(err));
-
-
