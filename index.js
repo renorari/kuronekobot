@@ -3,6 +3,7 @@ console.log(require('discord.js').version)
 const { Client, Intents, MessageEmbed, Permissions, MessageActionRow,  MessageButton, } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
 // const fs = require('fs');
+const Tesseract = require('tesseract.js');
 
 const prefix = '!'
 // let connections = {};
@@ -10,7 +11,6 @@ const prefix = '!'
 
 DISCORD_BOT_TOKEN = "TOKEN"
 
-//ステータス
 client.on('ready', () => {
     //This will get the amount of servers and then return it.
     const servers = client.guilds.cache.size
@@ -31,8 +31,7 @@ client.on('messageCreate', async message => {
     if (message.content.indexOf(prefix) !== 0) return;
     const [command, ...args] = message.content.slice(prefix.length).split(' ')
 
-    switch (command) 
-//Google検索
+    switch (command) {
         case 'gsh':
             flag = 1;
             let msg = '検索したいキーワード';
@@ -59,7 +58,6 @@ client.on('messageCreate', async message => {
             }
         break;
 
-//サポートサーバー
         case 'support':
             var embed = new MessageEmbed({
                 title: "サポートサーバーです",
@@ -74,7 +72,6 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
-//helpコマンド
         case 'help':
             var embed = new MessageEmbed({
                 title: "helpです",
@@ -96,10 +93,10 @@ client.on('messageCreate', async message => {
                     {
                         name: "!support",
                         value: "サポサバのURLを表示します"
-//                    },
-//                    {
-//                        name: "!sp",
-//                        value: "制作協力者の紹介です"
+                    },
+                    {
+                        name: "!sp",
+                        value: "制作協力者の紹介です"
                     },
                     {
                         name: "!gban",
@@ -126,7 +123,7 @@ client.on('messageCreate', async message => {
                         value: "BOT支援送金フォームです"
                     },
                     {
-                        name: "!user [ID]",
+                        name: "!user [メンションもしくはID]",
                         value: "ユーザー情報を出せます"
                     },
                     {
@@ -154,8 +151,12 @@ client.on('messageCreate', async message => {
                         value: "投票ができます"
                     },
                     {
-                        name: "!BAN メンション",
-                        value: "緊急でBANコマンドは無効化しています。 開発者募集中です！https://kuroneko6423.com/Application"
+                        name: "!ban [メンションまたはID]",
+                        value: "ユーザーをBANします"
+                    },
+                    {
+                        name: "!tc [メンションまたはID]",
+                        value: "ticketを作ります。"
                     },
                     {
                         name: "!omikuji",
@@ -174,16 +175,14 @@ client.on('messageCreate', async message => {
                         value: "タイムアウトしたユーザーを解除する。"
                     },
                     {
-                        name: "!ti [ticketのタイトル]",
+                        name: "!tc [ticketのタイトル]",
                         value: "ticketを作ります。"
-
                     }
                 ]
             })
             message.channel.send({embeds: [embed]})
         break;
 
-//おみくじ機能
         case 'omikuji':
             let arr = ["大吉", "中吉", "小吉", "吉", "凶", "大凶"];
             var random = Math.floor(Math.random() * arr.length);
@@ -191,7 +190,6 @@ client.on('messageCreate', async message => {
             message.reply({content: result});
         break;
 
-//ping確認コマンド
         case 'ping':
             message.channel.send({content: ` Ping を確認しています...`})
             .then((pingcheck) => {
@@ -201,7 +199,6 @@ client.on('messageCreate', async message => {
             });
         break;
 
-//メッセージ消去
         case 'c':
             if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
             if (!args[0]) return message.channel.send(
@@ -212,7 +209,6 @@ client.on('messageCreate', async message => {
             message.channel.bulkDelete(messages);
         break;
 
-//グローバルチャットのルール
         case 'g-rule':
             var embed = new MessageEmbed({
                 title: "グローバルチャット利用規約",
@@ -252,7 +248,6 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
-//KuronekoServerのweb
         case 'web':
             var embed = new MessageEmbed({
                 title: "webサイトです",
@@ -266,7 +261,6 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
-//グローバルBANフォーム
         case 'gban':
             var embed = new MessageEmbed({
                 title: "グローバルBANをするためのフォームです",
@@ -280,41 +274,40 @@ client.on('messageCreate', async message => {
             message.channel.send({embeds: [embed]});
         break;
 
-//運営リスト2
-//        case 'sp':
-//            var embed = new MessageEmbed({
-//                title: "制作にて協力してくれた方と主の紹介",
-//                description: "",
-//                color: 0xffff00,
-//                fields: [
-//                    {
-//                        name: "黒猫ちゃん(管理者)",
-//                        value: "Discord | https://discord.gg/Ya6YqBr | web | https://kuroneko6423.com/"
-//                    },
-//                    {
-//                        name: "Yuukiさん",
-//                        value: "Discord | https://discord.gg/uc5KfSPwSX"
-//                    },
-//                    {
-//                        name: "cronさん",
-//                        value: "web | https://cron.jp"
-//		                    },
-//                    {
-//                        name: "Nabrさん",
-//                        value: "よろしく"
-//		                    },
-//                    {
-//                        name: "forestblackさん",
-//                        value: "web | https://komoro.work/"
-//                    },
-//                    {
-//                        name: "YHさん",
-//                        value: "寄付 | https://ko-fi.com/yh82667"
-//                    }
-//                ]
-//            })
-//            message.channel.send({embeds: [embed]});
-//        break;
+        case 'sp':
+            var embed = new MessageEmbed({
+                title: "制作にて協力してくれた方と主の紹介",
+                description: "",
+                color: 0xffff00,
+                fields: [
+                    {
+                        name: "黒猫ちゃん(管理者)",
+                        value: "Discord | https://discord.gg/Ya6YqBr | web | https://kuroneko6423.com/"
+                    },
+                    {
+                        name: "Yuukiさん",
+                        value: "Discord | https://discord.gg/uc5KfSPwSX"
+                    },
+                    {
+                        name: "cronさん",
+                        value: "web | https://cron.jp"
+		                    },
+                    {
+                        name: "Nabrさん",
+                        value: "よろしく"
+		                    },
+                    {
+                        name: "forestblackさん",
+                        value: "web | https://komoro.work/"
+                    },
+                    {
+                        name: "YHさん",
+                        value: "寄付 | https://ko-fi.com/yh82667"
+                    }
+                ]
+            })
+            message.channel.send({embeds: [embed]});
+        break;
 
 //bot導入宣伝
         case 'in':
@@ -441,7 +434,7 @@ client.on('messageCreate', async message => {
 
 //ユーザー情報
         case 'user':
-            const user_id = args[0]
+            let user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
             if (!user_id) return message.channel.send({ content: "エラー: IDが入力されていません" });
 
             const member = message.guild.members.cache.get(user_id);
@@ -515,9 +508,40 @@ client.on('messageCreate', async message => {
             emojis.slice(0, choices.length).forEach(emoji => poll.react(emoji))
         break;
 
+//BAN機能
         case 'ban':
-            message.channel.send({content: `緊急でBANコマンドは無効化しています。 開発者募集中です！https://kuroneko6423.com/Application`});
+            if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
+            
+            const ban_user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
+            if (!ban_user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
+            const ban_member = message.guild.members.cache.get(ban_user_id);
+            if (!ban_member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" })
+            ban_member.ban()
+            .then((banned_user) => {
+                return message.channel.send({ content: `${banned_user.user.tag} をBanしました`})
+            })
+            .catch(reason => {
+                console.warn(reason)
+                return message.channel.send({ content: "エラーが発生しました"})
+            })
         break;
+        
+//kick機能
+        case 'kick':
+            if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
+            
+            const kick_user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
+            if (!kick_user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
+            const kick_member = message.guild.members.cache.get(kick_user_id);
+            if (!kick_member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" })
+            kick_member.kick()
+            .then((kicked_user) => {
+                return message.channel.send({ content: `${kicked_user.user.tag} をKickしました`})
+            })
+            .catch(reason => {
+                console.warn(reason)
+                return message.channel.send({ content: "エラーが発生しました"})
+            })
     }
 })
 
@@ -525,6 +549,8 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', async message => {
 
     var msg = null
+
+    if (message.author.bot) return;
 
     switch (message.content){
         case 'こんにちは':
@@ -573,10 +599,10 @@ client.on('messageCreate', async message => {
             msg = 'あけおめ！ :boom::boom::boom: '
         break;
     }
-    if (!msg == null){
+    if (msg){
         message.channel.send({content: msg})
     }
-  })
+})
 
 //グローバルチャット
 client.on("messageCreate", message => {
@@ -633,7 +659,7 @@ if(!message.member.permissions.has("MODERATE_MEMBERS")||!message.channel.permiss
 
 //ticket機能
 client.on('messageCreate', async message => {
-  if (message.content.startsWith("!ti")) {
+  if (message.content.startsWith("!tc")) {
     if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send('NOADOMIN');
       const args = message.content.split(" ").slice(1);
       if (!args[0]) return message.reply("コンテンツがないよ");
@@ -689,5 +715,82 @@ client.on('interactionCreate', async(interaction) => {
       interaction.channel.delete().catch(e => interaction.reply(`エラー:${e.message}`))
   }
 });
+
+//画像読み込み機能
+const lang = ["jpn", "eng"]
+/*
+https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html
+ここのLangCodeの部分を追加していく(現在はjpnとengのみ自分でやって)
+*/
+client.on('messageCreate', async message => {
+  //メッセージイベント
+    if (message.content.startsWith("!読み込み")) {
+      //メッセージの初めの文字が!読み込みだった場合実行
+        let n = 0;
+        //nに0を代入してる
+        let i = 0;
+        //iに0を代入する
+        const args = message.content.split(" ")[1];
+        //argsに空白で区切った配列の1番目の文字を代入
+        if (!args) return message.reply({
+          //argsが何もなかったら
+                      embeds: [{
+                description: "言語を指定してください言語リスト\n[click me](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html)\nLangCodeの部分を打ってね"
+            }]
+        });
+        if (!lang.includes(args)) return message.reply({
+          //argsにlang以外の文字があったら
+            embeds: [{
+                description: `無効な言語\n現在使えるのは**${lang}**のみです\n[click me](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html)\nLangCodeの部分を打ってね`
+            }]
+        })
+        const file = message.attachments.first()
+        ///ファイルを取得
+        if (!file) return message.reply("添付ファイルがないよ");
+        //なにもなかった場合
+        if (!file.height && !file.width) return message.reply("画像じゃないよ");
+        //画像じゃなかった場合
+        const msg = await message.reply("処理中")
+        //処理中と表示
+        await Tesseract.recognize(file.url, args, {
+          //画像を解析
+            logger: m => {
+              //LOG
+                msg.edit({
+                    content: `処理中${i}処理目\n${"#".repeat(n)}`,
+                    embeds: [{
+                        description: JSON.stringify(m)
+                    }]
+                })
+                if (n >= 10) {
+                  //nが10以上の場合はnを1にする
+                    n = 1
+                } else {
+                  //10以下だった場合足していく
+                    n++
+                }
+                i++
+                //iを足していく
+            }
+        }).then(({
+            data: {
+                text
+            }
+        }) => {
+            msg.edit({
+                content: `処理完了言語${args}`,
+                embeds: [{
+                    description: text
+                }]
+            });
+            //解析結果を出す
+        }).catch(e => msg.edit({
+            content: "エラー",
+            embeds: [{
+                description: e.message
+            }]
+        }))
+    }
+})
 
 client.login(DISCORD_BOT_TOKEN).catch(err => console.warn(err));
