@@ -9,7 +9,8 @@ const prefix = '!'
 // let connections = {};
 // let speak_chs = {};
 
-DISCORD_BOT_TOKEN = "TOKEN"
+DISCORD_BOT_TOKEN = "BOTTOKEN"
+LOG_CHANNEL_ID = '937190204693958706'
 
 client.on('ready', () => {
     //This will get the amount of servers and then return it.
@@ -24,6 +25,20 @@ client.on('ready', () => {
 })
 
 client.on('messageCreate', async message => {
+
+    async function sendError(err) {
+        const err_embed = new MessageEmbed({
+            description: '```\n' + err.toString() + '\n```',
+            footer:{
+                text: `サーバー: ${message.guild.id} | ${message.content}`
+            }
+        })
+        const ch = await client.channels.fetch(LOG_CHANNEL_ID)
+        if (ch) {
+            ch.send({embeds: [err_embed]})
+        }
+    }
+
     if (message.author.bot) {
         return;
     }
@@ -516,6 +531,7 @@ client.on('messageCreate', async message => {
             if (!ban_user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
             const ban_member = message.guild.members.cache.get(ban_user_id);
             if (!ban_member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" })
+            if(!ban_member.bannable) return message.channel.send({ content: "エラー: Botより上の役職を持っているメンバーをBanすることはできません。" })
             ban_member.ban()
             .then((banned_user) => {
                 return message.channel.send({ content: `${banned_user.user.tag} をBanしました`})
@@ -534,6 +550,7 @@ client.on('messageCreate', async message => {
             if (!kick_user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
             const kick_member = message.guild.members.cache.get(kick_user_id);
             if (!kick_member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" })
+            if(!kick_member.kickable) return message.channel.send({ content: "エラー: Botより上の役職を持っているメンバーをKickすることはできません。" })
             kick_member.kick()
             .then((kicked_user) => {
                 return message.channel.send({ content: `${kicked_user.user.tag} をKickしました`})
@@ -792,5 +809,7 @@ client.on('messageCreate', async message => {
         }))
     }
 })
+
+console.log(1) 
 
 client.login(DISCORD_BOT_TOKEN).catch(err => console.warn(err));
