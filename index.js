@@ -214,15 +214,25 @@ client.on('messageCreate', async message => {
             });
         break;
 
-        case 'c':
-            if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
-            if (!args[0]) return message.channel.send(
-                "❌ エラー発生:空白がない または数字が書いていません"); //空白がないまたは数字がない場合表示
-            const messages = await message.channel.messages.fetch({
-                limit: args[0]
-            }); //していした数を削除
-            message.channel.bulkDelete(messages);
-        break;
+	case 'c':
+    	if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
+    	if (!args[0]) return message.channel.send("エラー: 空白がない または数字が書いていません"); //空白がないまたは数字がない場合表示
+    	if (args[0] > 100) return message.channel.send({content: "エラー: 削除する数は100以下で指定してください。"})
+    	if (args[0].isNaN()) return message.channel.send({content: "エラー: 削除する数は数字で指定してください。"})
+    	const messages = await message.channel.messages.fetch({
+        	limit: args[0]
+    	}); //していした数を削除
+    	message.channel.bulkDelete(messages)
+    	.then((msg) => {
+        	return message.channel.send({content: `${msg.size} メッセージ 削除しました。`})
+    	})
+    	.catch(reason => {
+        	sendError(reason)
+        	return message.channel.send({ content: "エラーが発生しました" })
+    	})
+    
+    
+	break;
 
         case 'g-rule':
             var embed = new MessageEmbed({
