@@ -1,12 +1,7 @@
 console.log(require('discord.js').version)
 
 const { Client, Intents, MessageEmbed, Permissions, MessageActionRow,  MessageButton, } = require('discord.js');
-const client = new Client({
-     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES],
-     allowedMentions: {
-        parse: []
-      }
-    });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
 // const fs = require('fs');
 const Tesseract = require('tesseract.js');
 
@@ -14,8 +9,8 @@ const prefix = '!'
 // let connections = {};
 // let speak_chs = {};
 
-DISCORD_BOT_TOKEN = "TOKEN"
-LOG_CHANNEL_ID = 'ID'
+DISCORD_BOT_TOKEN = "BOTTOKEN"
+LOG_CHANNEL_ID = '937190204693958706'
 
 client.on('ready', () => {
     //This will get the amount of servers and then return it.
