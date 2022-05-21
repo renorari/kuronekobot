@@ -1,6 +1,6 @@
 console.log(require('discord.js').version)
 
-const { Client, Intents, MessageEmbed, Permissions, MessageActionRow,  MessageButton, } = require('discord.js');
+const { Client, Intents, MessageEmbed, Permissions, MessageActionRow, MessageButton, } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
 // const fs = require('fs');
 const Tesseract = require('tesseract.js');
@@ -16,7 +16,7 @@ client.on('ready', () => {
     //This will get the amount of servers and then return it.
     const servers = client.guilds.cache.size
     // const users = client.users.cache.size
-    
+
     console.log(`Botは今 ${servers} 個のサーバーに入ってるよー`)
 
     client.user.setActivity(`!help | 導入数 ${servers} `, {
@@ -29,13 +29,13 @@ client.on('messageCreate', async message => {
     async function sendError(err) {
         const err_embed = new MessageEmbed({
             description: '```\n' + err.toString() + '\n```',
-            footer:{
+            footer: {
                 text: `サーバー: ${message.guild.id} | ${message.content}`
             }
         })
         const ch = await client.channels.fetch(LOG_CHANNEL_ID)
         if (ch) {
-            ch.send({embeds: [err_embed]})
+            ch.send({ embeds: [err_embed] })
         }
     }
 
@@ -71,7 +71,7 @@ client.on('messageCreate', async message => {
                     .catch(console.error);
                 return;
             }
-        break;
+            break;
 
         case 'support':
             var embed = new MessageEmbed({
@@ -82,10 +82,10 @@ client.on('messageCreate', async message => {
                     name: "URL",
                     value: "https://discord.gg/Y6w5Jv3EAR",
                     inline: false,
-                }] 
+                }]
             })
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
         case 'help':
             var embed = new MessageEmbed({
@@ -195,44 +195,44 @@ client.on('messageCreate', async message => {
                     }
                 ]
             })
-            message.channel.send({embeds: [embed]})
-        break;
+            message.channel.send({ embeds: [embed] })
+            break;
 
         case 'omikuji':
             let arr = ["大吉", "中吉", "小吉", "吉", "凶", "大凶"];
             var random = Math.floor(Math.random() * arr.length);
             var result = arr[random];
-            message.reply({content: result});
-        break;
+            message.reply({ content: result });
+            break;
 
         case 'ping':
-            message.channel.send({content: ` Ping を確認しています...`})
-            .then((pingcheck) => {
-                pingcheck.edit(
-                    `botの速度|${pingcheck.createdTimestamp - message.createdTimestamp} ms`
-                )
-            });
-        break;
+            message.channel.send({ content: ` Ping を確認しています...` })
+                .then((pingcheck) => {
+                    pingcheck.edit(
+                        `botの速度|${pingcheck.createdTimestamp - message.createdTimestamp} ms`
+                    )
+                });
+            break;
 
-	case 'c':
-    	if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
-    	if (!args[0]) return message.channel.send("エラー: 空白がない または数字が書いていません"); //空白がないまたは数字がない場合表示
-    	if (args[0] > 100) return message.channel.send({content: "エラー: 削除する数は100以下で指定してください。"})
-    	if (args[0].isNaN()) return message.channel.send({content: "エラー: 削除する数は数字で指定してください。"})
-    	const messages = await message.channel.messages.fetch({
-        	limit: args[0]
-    	}); //していした数を削除
-    	message.channel.bulkDelete(messages)
-    	.then((msg) => {
-        	return message.channel.send({content: `${msg.size} メッセージ 削除しました。`})
-    	})
-    	.catch(reason => {
-        	sendError(reason)
-        	return message.channel.send({ content: "エラーが発生しました" })
-    	})
-    
-    
-	break;
+        case 'c':
+            if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
+            if (!args[0]) return message.channel.send("エラー: 空白がない または数字が書いていません"); //空白がないまたは数字がない場合表示
+            if (args[0] > 100) return message.channel.send({ content: "エラー: 削除する数は100以下で指定してください。" })
+            if (args[0].isNaN()) return message.channel.send({ content: "エラー: 削除する数は数字で指定してください。" })
+            const messages = await message.channel.messages.fetch({
+                limit: args[0]
+            }); //していした数を削除
+            message.channel.bulkDelete(messages)
+                .then((msg) => {
+                    return message.channel.send({ content: `${msg.size} メッセージ 削除しました。` })
+                })
+                .catch(reason => {
+                    sendError(reason)
+                    return message.channel.send({ content: "エラーが発生しました" })
+                })
+
+
+            break;
 
         case 'g-rule':
             var embed = new MessageEmbed({
@@ -270,8 +270,8 @@ client.on('messageCreate', async message => {
                     }
                 ]
             });
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
         case 'web':
             var embed = new MessageEmbed({
@@ -283,8 +283,8 @@ client.on('messageCreate', async message => {
                     value: "https://kuroneko6423.com/"
                 }]
             })
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
         case 'gban':
             var embed = new MessageEmbed({
@@ -296,8 +296,8 @@ client.on('messageCreate', async message => {
                     value: "https://forms.gle/B1rv2DWGQTnZcYuJ7"
                 }]
             })
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
         case 'sp':
             var embed = new MessageEmbed({
@@ -316,11 +316,11 @@ client.on('messageCreate', async message => {
                     {
                         name: "cronさん",
                         value: "web | https://cron.jp"
-		                    },
+                    },
                     {
                         name: "Nabrさん",
                         value: "よろしく"
-		                    },
+                    },
                     {
                         name: "forestblackさん",
                         value: "web | https://komoro.work/"
@@ -331,10 +331,10 @@ client.on('messageCreate', async message => {
                     }
                 ]
             })
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
-//bot導入宣伝
+        //bot導入宣伝
         case 'in':
             var embed = new MessageEmbed({
                 title: "BOT導入",
@@ -347,10 +347,10 @@ client.on('messageCreate', async message => {
                     }
                 ]
             })
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
-//寄付サイト
+        //寄付サイト
         case 'donation':
             var embed = new MessageEmbed({
                 title: "BOT支援",
@@ -367,10 +367,10 @@ client.on('messageCreate', async message => {
                     }
                 ]
             })
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
-//MinecraftServerルール
+        //MinecraftServerルール
         case 'MinecraftRule':
             var embed = new MessageEmbed({
                 title: "～～minecraftServer Rule",
@@ -431,10 +431,10 @@ client.on('messageCreate', async message => {
                     }
                 ]
             })
-            message.channel.send({embeds: [embed]});
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
-//運営リスト
+        //運営リスト
         case 'pi':
             var embed = new MessageEmbed()
                 .setTitle("KuronekoServer運営List")　//Embedのタイトル
@@ -454,10 +454,10 @@ client.on('messageCreate', async message => {
                 .setColor("RANDOM")　//Embedのカラー
                 .setTimestamp();
 
-            message.channel.send({embeds: [embed]}); 
-        break;
+            message.channel.send({ embeds: [embed] });
+            break;
 
-//ユーザー情報
+        //ユーザー情報
         case 'user':
             let user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
             if (!user_id) return message.channel.send({ content: "エラー: IDが入力されていません" });
@@ -465,9 +465,9 @@ client.on('messageCreate', async message => {
             const member = message.guild.members.cache.get(user_id);
             if (!member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" })
 
-            const presence_data = {"online": "オンライン", "offline": "オフライン", "dnd": "取り込み中", "idle": "退席中"}
+            const presence_data = { "online": "オンライン", "offline": "オフライン", "dnd": "取り込み中", "idle": "退席中" }
             message.channel.send({
-                embeds:[
+                embeds: [
                     {
                         title: `───${member.user?.username}の情報───`,
                         description: `${member.user?.username}の情報を表示しています`,
@@ -510,18 +510,18 @@ client.on('messageCreate', async message => {
                         ]
                     }
                 ]
-                
-            });
-        break;
 
-//アンケート機能
+            });
+            break;
+
+        //アンケート機能
         case 'poll':
             const [title, ...choices] = args
-            if (!title) return message.channel.send({content: 'タイトルを指定してください'})
+            if (!title) return message.channel.send({ content: 'タイトルを指定してください' })
             const emojis = ['🇦', '🇧', '🇨', '🇩']
 
             if (choices.length < 2 || choices.length > emojis.length)
-              return message.channel.send({content: `選択肢は2から${emojis.length}つを指定してください`})
+                return message.channel.send({ content: `選択肢は2から${emojis.length}つを指定してください` })
             const poll = await message.channel.send({
                 embeds: [
                     {
@@ -531,44 +531,44 @@ client.on('messageCreate', async message => {
                 ]
             });
             emojis.slice(0, choices.length).forEach(emoji => poll.react(emoji))
-        break;
+            break;
 
-//BAN機能
+        //BAN機能
         case 'ban':
             if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
-            
+
             const ban_user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
             if (!ban_user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
             const ban_member = message.guild.members.cache.get(ban_user_id);
             if (!ban_member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" })
-            if(!ban_member.bannable) return message.channel.send({ content: "エラー: Botより上の役職を持っているメンバーをBanすることはできません。" })
+            if (!ban_member.bannable) return message.channel.send({ content: "エラー: Botより上の役職を持っているメンバーをBanすることはできません。" })
             ban_member.ban()
-            .then((banned_user) => {
-                return message.channel.send({ content: `${banned_user.user.tag} をBanしました`})
-            })
-            .catch(reason => {
-                console.warn(reason)
-                return message.channel.send({ content: "エラーが発生しました"})
-            })
-        break;
-        
-//kick機能
+                .then((banned_user) => {
+                    return message.channel.send({ content: `${banned_user.user.tag} をBanしました` })
+                })
+                .catch(reason => {
+                    console.warn(reason)
+                    return message.channel.send({ content: "エラーが発生しました" })
+                })
+            break;
+
+        //kick機能
         case 'kick':
             if (!message.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS)) return message.channel.send("❌ 権限が不足しています。"); //権限がなかったら表示
-            
+
             const kick_user_id = (message.mentions.members.size > 0) ? message.mentions.members.first().id : args[0];
             if (!kick_user_id) return message.channel.send({ content: "エラー: メンバーが指定されていません\nIDかメンションで指定してください" });
             const kick_member = message.guild.members.cache.get(kick_user_id);
             if (!kick_member) return message.channel.send({ content: "エラー: 指定されたIDが見つかりません" })
-            if(!kick_member.kickable) return message.channel.send({ content: "エラー: Botより上の役職を持っているメンバーをKickすることはできません。" })
+            if (!kick_member.kickable) return message.channel.send({ content: "エラー: Botより上の役職を持っているメンバーをKickすることはできません。" })
             kick_member.kick()
-            .then((kicked_user) => {
-                return message.channel.send({ content: `${kicked_user.user.tag} をKickしました`})
-            })
-            .catch(reason => {
-                console.warn(reason)
-                return message.channel.send({ content: "エラーが発生しました"})
-            })
+                .then((kicked_user) => {
+                    return message.channel.send({ content: `${kicked_user.user.tag} をKickしました` })
+                })
+                .catch(reason => {
+                    console.warn(reason)
+                    return message.channel.send({ content: "エラーが発生しました" })
+                })
     }
 })
 
@@ -579,168 +579,168 @@ client.on('messageCreate', async message => {
 
     if (message.author.bot) return;
 
-    switch (message.content){
+    switch (message.content) {
         case 'こんにちは':
             msg = '...こんにちは～'
-        break;
+            break;
         case 'おはよう':
             msg = 'おはようです...(眠たい...)'
-        break;
+            break;
         case 'おはようございます':
             msg = 'おはようございま～す！'
-        break;
+            break;
         case 'なにしてるの？':
             msg = '私も気になる！'
-        break;
+            break;
         case 'おやすみなさい':
             msg = 'おやすみ～'
-        break;
+            break;
         case 'こんばんは':
             msg = 'こんばんは！'
-        break;
+            break;
         case 'こんばんはー':
             msg = 'こんばんちわ！'
-        break;
+            break;
         case 'おはようー':
             msg = 'おはようです！！'
-        break;
+            break;
         case 'おはー':
             msg = 'おはよ～うオーディションして....ってあぁぁぁぁぁぁぁぁ。絶対聞かなかったことにしてくださいね！'
-        break;
+            break;
         case '暇':
             msg = '雑談します？ [Botだけどね]'
-        break;
+            break;
         case '課題':
             msg = '課題なんて燃やしちゃえ★'
-        break;
+            break;
         case 'は？':
             msg = '怒らないで(´;ω;｀)'
-        break;
+            break;
         case 'あ？':
             msg = '怒らないで(´;ω;｀)'
-        break;
+            break;
         case '嫌い':
             msg = 'そんなこと言わないで(´;ω;｀)'
-        break;
+            break;
         case 'あけおめ':
             msg = 'あけおめ！ :boom::boom::boom: '
-        break;
+            break;
     }
-    if (msg){
-        message.channel.send({content: msg})
+    if (msg) {
+        message.channel.send({ content: msg })
     }
 })
 
 //グローバルチャット
 client.on("messageCreate", message => {
     if (message.author?.bot || message.channel.name != "グローバルチャット") return;
-    
-        client.channels.cache.forEach(ch => {
-            console.log(ch.name)
-            if (ch.type == "GUILD_TEXT" && ch.name === "グローバルチャット") {
-                var embed = new MessageEmbed({
-                    title: "",
-                    color: "RANDOM",
-                    description: message.content, // メッセージの内容を説明欄に
-                    timestamp: new Date(), // 時間を時間の欄に
-                    footer: {
-                        icon_url: message.guild.iconURL(), // フッターのアイコンのURLをメッセージが送信されたサーバーのアイコンのURLに
-                        text: message.guild.name // 文字をサーバーの名前に
-                    },
-                    image: {
-                        url: message.attachments.first() || null//もしメッセージの中にファイルが有るなら、メッセージの中のはじめのファイルのURLを。無いならnull(無し)を。
-                    },
-                    author: {
-                        name: message.author.tag,//メッセージの送信者のタグ付きの名前を送信者名の欄に
-                        url: `https://discord.com/users/${message.author.id}`,//名前を押すとその人のプロフィールが出されるように(https://discord.com/users/ その人のID)
-                        icon_url: message.author.displayAvatarURL({ format: 'png' })//メッセージ送信者のアイコンのURLを送信者のアイコンの欄に
-                    }
-                });
-                ch.send({embeds: [embed]})
-                .catch(e => console.log(e))
-            };
-        });
-        message.delete({ timeout: 1000 }).catch((e) => message.channel.send(`メッセージを削除する際にエラーが起きました\nエラー:${e.message}`))  
-    })
 
-//timeout機能
-.on('messageCreate', message => {
-  if(message.content.startsWith("!timeout")){
-if(!message.member.permissions.has("MODERATE_MEMBERS")||!message.channel.permissionsFor(message.guild.me).has("MODERATE_MEMBERS")) return message.reply("権限不足");
-    const args = message.content.split(" "),member = message.mentions.members.first()??message.guild.members.cache.get(args[1]);
-    if(!member) return message.reply(`ユーザーが見つかりませんでした`);
-    if(isNaN(args[2])) return message.reply(`数字を入れてください`);
-    member.timeout(Number(args[2]) * 60 * 1000, args.slice(3)?.join(" ")||`なし`)    
-    .then(message.reply(`正常にタイムアウトしました\n詳細\n対象ユーザー:${member} 時間:${args[2]}分 理由:${args.slice(3)?.join(" ")||"なし"}`))
-    .catch(e=>message.reply(`エラー:${e}`));
-  }
-  if(message.content.startsWith("!untimeout")){
-    if(!message.member.permissions.has("MODERATE_MEMBERS")||!message.channel.permissionsFor(message.guild.me).has("MODERATE_MEMBERS")) return message.reply("権限不足");
-    const args = message.content.split(" ")[1],member = message.mentions.members.first()??message.guild.members.cache.get(args);
-    if(!member) return message.reply(`ユーザーが見つかりませんでした`);
-    member.timeout(0)
-    .then(message.reply(`正常にタイムアウトを解除しました\n対象ユーザー${member}`))
-    .catch(e=>message.reply(`エラー:${e}`));
-  }
+    client.channels.cache.forEach(ch => {
+        console.log(ch.name)
+        if (ch.type == "GUILD_TEXT" && ch.name === "グローバルチャット") {
+            var embed = new MessageEmbed({
+                title: "",
+                color: "RANDOM",
+                description: message.content, // メッセージの内容を説明欄に
+                timestamp: new Date(), // 時間を時間の欄に
+                footer: {
+                    icon_url: message.guild.iconURL(), // フッターのアイコンのURLをメッセージが送信されたサーバーのアイコンのURLに
+                    text: message.guild.name // 文字をサーバーの名前に
+                },
+                image: {
+                    url: message.attachments.first() || null//もしメッセージの中にファイルが有るなら、メッセージの中のはじめのファイルのURLを。無いならnull(無し)を。
+                },
+                author: {
+                    name: message.author.tag,//メッセージの送信者のタグ付きの名前を送信者名の欄に
+                    url: `https://discord.com/users/${message.author.id}`,//名前を押すとその人のプロフィールが出されるように(https://discord.com/users/ その人のID)
+                    icon_url: message.author.displayAvatarURL({ format: 'png' })//メッセージ送信者のアイコンのURLを送信者のアイコンの欄に
+                }
+            });
+            ch.send({ embeds: [embed] })
+                .catch(e => console.log(e))
+        };
+    });
+    message.delete({ timeout: 1000 }).catch((e) => message.channel.send(`メッセージを削除する際にエラーが起きました\nエラー:${e.message}`))
 })
+
+    //timeout機能
+    .on('messageCreate', message => {
+        if (message.content.startsWith("!timeout")) {
+            if (!message.member.permissions.has("MODERATE_MEMBERS") || !message.channel.permissionsFor(message.guild.me).has("MODERATE_MEMBERS")) return message.reply("権限不足");
+            const args = message.content.split(" "), member = message.mentions.members.first() ?? message.guild.members.cache.get(args[1]);
+            if (!member) return message.reply(`ユーザーが見つかりませんでした`);
+            if (isNaN(args[2])) return message.reply(`数字を入れてください`);
+            member.timeout(Number(args[2]) * 60 * 1000, args.slice(3)?.join(" ") || `なし`)
+                .then(message.reply(`正常にタイムアウトしました\n詳細\n対象ユーザー:${member} 時間:${args[2]}分 理由:${args.slice(3)?.join(" ") || "なし"}`))
+                .catch(e => message.reply(`エラー:${e}`));
+        }
+        if (message.content.startsWith("!untimeout")) {
+            if (!message.member.permissions.has("MODERATE_MEMBERS") || !message.channel.permissionsFor(message.guild.me).has("MODERATE_MEMBERS")) return message.reply("権限不足");
+            const args = message.content.split(" ")[1], member = message.mentions.members.first() ?? message.guild.members.cache.get(args);
+            if (!member) return message.reply(`ユーザーが見つかりませんでした`);
+            member.timeout(0)
+                .then(message.reply(`正常にタイムアウトを解除しました\n対象ユーザー${member}`))
+                .catch(e => message.reply(`エラー:${e}`));
+        }
+    })
 
 //ticket機能
 client.on('messageCreate', async message => {
-  if (message.content.startsWith("!tc")) {
-    if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send('NOADOMIN');
-      const args = message.content.split(" ").slice(1);
-      if (!args[0]) return message.reply("コンテンツがないよ");
-      const tic1 = new MessageButton().setCustomId("ticket").setStyle("PRIMARY").setLabel("チケット");
-      await message.channel.send({
-          embeds: [{
-              description: String(args.join(" "))
-          }],
-          components: [new MessageActionRow().addComponents(tic1)]
-      });
-      if(message.guild.channels.cache.find(name => name.name === "ticket")) return;
-      message.guild.channels.create('ticket',{
-         type: 'GUILD_CATEGORY'
+    if (message.content.startsWith("!tc")) {
+        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send('NOADOMIN');
+        const args = message.content.split(" ").slice(1);
+        if (!args[0]) return message.reply("コンテンツがないよ");
+        const tic1 = new MessageButton().setCustomId("ticket").setStyle("PRIMARY").setLabel("チケット");
+        await message.channel.send({
+            embeds: [{
+                description: String(args.join(" "))
+            }],
+            components: [new MessageActionRow().addComponents(tic1)]
+        });
+        if (message.guild.channels.cache.find(name => name.name === "ticket")) return;
+        message.guild.channels.create('ticket', {
+            type: 'GUILD_CATEGORY'
         });
         //ticketというカテゴリーを作る
-  }
+    }
 });
-client.on('interactionCreate', async(interaction) => {
-  if (interaction.customId === "ticket") {
-      const ticketid = interaction.user.id
-      if (interaction.guild.channels.cache.find(name => name.name === ticketid)) return interaction.reply({
-          content: "これ以上作れないよ",
-          ephemeral: true
-      });
-      const ct = interaction.guild.channels.cache.find(name => name.name === "ticket")
-      if(!ct) return interaction.channel.send("ticketカテゴリーがありません");
-      interaction.guild.channels.create(ticketid, {
-          permissionOverwrites: [{
-              id: interaction.guild.roles.everyone,
-              deny: ['VIEW_CHANNEL']
-          }],
-          parent: ct.id
-      }).then(channels => {
-          channels.permissionOverwrites.edit(interaction.user.id, {
-              VIEW_CHANNEL: true
-          });
-          const tic2 = new MessageButton().setCustomId("close").setStyle("PRIMARY").setLabel("閉じる");
-          //buttonを作成
-          channels.send({
-              embeds: [{
-                  description: "チケットを閉じますか?"
-              }],
-              components: [new MessageActionRow().addComponents(tic2)]
-          })
-          interaction.reply({
-              content: `${channels}を作りました`,
-              ephemeral: true
-          });
-      }).catch(e => interaction.reply(`エラー:${e.message}`))
-  }
-  if (interaction.customId === "close") {
-    //buttonIDがcloseのボタンが押されたら実行
-      interaction.channel.delete().catch(e => interaction.reply(`エラー:${e.message}`))
-  }
+client.on('interactionCreate', async (interaction) => {
+    if (interaction.customId === "ticket") {
+        const ticketid = interaction.user.id
+        if (interaction.guild.channels.cache.find(name => name.name === ticketid)) return interaction.reply({
+            content: "これ以上作れないよ",
+            ephemeral: true
+        });
+        const ct = interaction.guild.channels.cache.find(name => name.name === "ticket")
+        if (!ct) return interaction.channel.send("ticketカテゴリーがありません");
+        interaction.guild.channels.create(ticketid, {
+            permissionOverwrites: [{
+                id: interaction.guild.roles.everyone,
+                deny: ['VIEW_CHANNEL']
+            }],
+            parent: ct.id
+        }).then(channels => {
+            channels.permissionOverwrites.edit(interaction.user.id, {
+                VIEW_CHANNEL: true
+            });
+            const tic2 = new MessageButton().setCustomId("close").setStyle("PRIMARY").setLabel("閉じる");
+            //buttonを作成
+            channels.send({
+                embeds: [{
+                    description: "チケットを閉じますか?"
+                }],
+                components: [new MessageActionRow().addComponents(tic2)]
+            })
+            interaction.reply({
+                content: `${channels}を作りました`,
+                ephemeral: true
+            });
+        }).catch(e => interaction.reply(`エラー:${e.message}`))
+    }
+    if (interaction.customId === "close") {
+        //buttonIDがcloseのボタンが押されたら実行
+        interaction.channel.delete().catch(e => interaction.reply(`エラー:${e.message}`))
+    }
 });
 
 //画像読み込み機能
@@ -750,9 +750,9 @@ https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html
 ここのLangCodeの部分を追加していく(現在はjpnとengのみ自分でやって)
 */
 client.on('messageCreate', async message => {
-  //メッセージイベント
+    //メッセージイベント
     if (message.content.startsWith("!読み込み")) {
-      //メッセージの初めの文字が!読み込みだった場合実行
+        //メッセージの初めの文字が!読み込みだった場合実行
         let n = 0;
         //nに0を代入してる
         let i = 0;
@@ -760,13 +760,13 @@ client.on('messageCreate', async message => {
         const args = message.content.split(" ")[1];
         //argsに空白で区切った配列の1番目の文字を代入
         if (!args) return message.reply({
-          //argsが何もなかったら
-                      embeds: [{
+            //argsが何もなかったら
+            embeds: [{
                 description: "言語を指定してください言語リスト\n[click me](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html)\nLangCodeの部分を打ってね"
             }]
         });
         if (!lang.includes(args)) return message.reply({
-          //argsにlang以外の文字があったら
+            //argsにlang以外の文字があったら
             embeds: [{
                 description: `無効な言語\n現在使えるのは**${lang}**のみです\n[click me](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html)\nLangCodeの部分を打ってね`
             }]
@@ -780,9 +780,9 @@ client.on('messageCreate', async message => {
         const msg = await message.reply("処理中")
         //処理中と表示
         await Tesseract.recognize(file.url, args, {
-          //画像を解析
+            //画像を解析
             logger: m => {
-              //LOG
+                //LOG
                 msg.edit({
                     content: `処理中${i}処理目\n${"#".repeat(n)}`,
                     embeds: [{
@@ -790,10 +790,10 @@ client.on('messageCreate', async message => {
                     }]
                 })
                 if (n >= 10) {
-                  //nが10以上の場合はnを1にする
+                    //nが10以上の場合はnを1にする
                     n = 1
                 } else {
-                  //10以下だった場合足していく
+                    //10以下だった場合足していく
                     n++
                 }
                 i++
@@ -820,6 +820,6 @@ client.on('messageCreate', async message => {
     }
 })
 
-console.log(1) 
+console.log(1)
 
 client.login(DISCORD_BOT_TOKEN).catch(err => console.warn(err));
